@@ -5,41 +5,43 @@ using UnityEngine;
 
 public class PhysicsController : MonoBehaviour
 {
-    //PSEUDO CODE: Declare private variable of type RigidBody, public float speed;
     [SerializeField] private Rigidbody rb;
     public float speed = 10f;
-    // Start is called before the first frame update
+
+    // Stretch: multiplier for increasing force (e.g. sprint)
+    public float sprintMultiplier = 2f;
+    public float currentMultiplier = 1f;
+
+    // Optional: limit max speed so physics doesn't run away
+    public float maxSpeed = 20f;
+
     void Start()
     {
-        // Initialize RigidBody variable by getting from current gameobject;
         rb = GetComponent<Rigidbody>();
     }
-    // Fixed Update is called once per frame - use fixed Update for physics
+
     void FixedUpdate()
     {
-        // Check for "a", "d", "w", and "d" key input, for each, add force vector3s going left, right, forward, and back
-        if(Input.GetKey("a"))
+        // Read input using Unity's axes (works for WASD / arrow keys / controllers)
+        float h = Input.GetAxis("Horizontal"); // A/D or Left/Right
+        float v = Input.GetAxis("Vertical");   // W/S or Up/Down
+
+        // Set multiplier (hold LeftShift to sprint)
+        currentMultiplier = Input.GetKey(KeyCode.LeftShift) ? sprintMultiplier : 1f;
+
+        // Build movement direction in local XZ plane
+        Vector3 inputDir = new Vector3(h, 0f, v).normalized;
+
+        if (inputDir != Vector3.zero)
         {
-           rb.AddForce(Vector3.left * speed);
-        }   
-        if(Input.GetKey("d"))
-        {
-           rb.AddForce(Vector3.right * speed);
-        }
-        if(Input.GetKey("w"))
-        {
-           rb.AddForce(Vector3.forward * speed);
-        }
-       if(Input.GetKey("s"))
-        {
-           rb.AddForce(Vector3.back * speed);
+            // Apply force in world-space forward/right
+            rb.AddForce(inputDir * speed * currentMultiplier, ForceMode.Acceleration);
         }
 
-        //Stretch Task - add multiple to increase force
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
-
-
+        // Optional: clamp velocity so physics stays stable
+        if (rb.linearVelocity.magnitude > maxSpeed)
+        {
+            rb.linearVelocity = Vector3.ClampMagnitude(rb.linearVelocity, maxSpeed);
+        }
     }
-//Stretch Tasks
-// Unity Rollaball (Combines forces in Vector https://learn.unity.com/project/roll-a-ball-tutorial )
-// Intermediate controllers https://medium.com/ironequal/unity-character-controller-vs-rigidbody-a1e243591483
+}
