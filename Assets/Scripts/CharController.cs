@@ -38,11 +38,11 @@ public class CharController : MonoBehaviour
         // FUNCTION: Simplest transform with ACC, DEC, Speed (space bar), and TDT.
 
         // PSEUDO CODE: Check for left and right key inputs. Turn if left or right keys are pressed.
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             transform.Rotate(Vector3.up, -rotation * Time.deltaTime);
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(Vector3.up, rotation * Time.deltaTime);
         }
