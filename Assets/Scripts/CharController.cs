@@ -30,19 +30,19 @@ public class CharController : MonoBehaviour
         {
             if (speed > 0)
             {
-                speed -= deceleration * Time.deltaTime;
+                speed = Mathf.Max(speed - (deceleration * Time.deltaTime), 0); // Ensure speed doesn't go below 0
             }
         }
         // PSEUDO CODE: Use the speed and transform to move the object forward.
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        transform.position += transform.forward * speed * Time.deltaTime;
         // FUNCTION: Simplest transform with ACC, DEC, Speed (space bar), and TDT.
 
         // PSEUDO CODE: Check for left and right key inputs. Turn if left or right keys are pressed.
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             transform.Rotate(Vector3.up, -rotation * Time.deltaTime);
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
             transform.Rotate(Vector3.up, rotation * Time.deltaTime);
         }
