@@ -11,6 +11,9 @@ public class CharController : MonoBehaviour
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float rotation = 100f;
 
+    [SerializeField] private float pushPower = 5f;
+
+
     private CharacterController _controller;
 
     private Vector3 _velocity = Vector3.zero;
@@ -68,13 +71,31 @@ public class CharController : MonoBehaviour
         Vector3 horizontalMovement = transform.forward * speed;
         Vector3 totalMovement = horizontalMovement + Vector3.up * _velocity.y   ;
         _controller.Move(totalMovement * Time.deltaTime);
-      
-
-        // FUNCTION: Simplest transform with ACC, DEC, Speed (space bar), and TDT.
-
-      
 
 
+   
+
+
+    }
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        //OnControllerColliderHit is called when the controller hits a collider while performing a Move.
+        Rigidbody body = hit.rigidbody;
+        
+
+        if (body == null || body.isKinematic == true)
+        {
+            return;
+        }
+        else if (hit.moveDirection.y < -0.3f)
+        {
+            return;
+        }
+        else
+        {
+            Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+            body.AddForce(pushDirection * pushPower, ForceMode.Impulse);
+        }
 
     }
 }
