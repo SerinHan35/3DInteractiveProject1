@@ -1147,10 +1147,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharController
   speed: 0
   maxSpeed: 100
-  acceleration: 5
-  deceleration: 5
+  acceleration: 7.5
+  deceleration: 7.5
   rotation: 180
-  pushPower: 50
+  pushPower: 125
   Gravity: -9.81
 --- !u!143 &1933024546
 CharacterController:

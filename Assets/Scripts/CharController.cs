@@ -13,7 +13,6 @@ public class CharController : MonoBehaviour
 
     [SerializeField] private float pushPower = 15f;
 
-
     private CharacterController _controller;
 
     private Vector3 _velocity = Vector3.zero;
@@ -23,13 +22,9 @@ public class CharController : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
     }
-    // Update is called once per frame.
+    
     void Update()
     {
-        // stretch task gravity section
-    
-
-
         // PSEUDO CODE: Check for space key input. If not max speed, accelerate, else decelerate.
         if (Input.GetKey(KeyCode.Space))
         {
@@ -47,7 +42,7 @@ public class CharController : MonoBehaviour
              }
 
         }
-        // PSEUDO CODE: Use the speed and transform to move the object forward.
+    
         // PSEUDO CODE: Check for left and right key inputs. Turn if left or right keys are pressed.
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
@@ -67,14 +62,9 @@ public class CharController : MonoBehaviour
             _velocity.y += Gravity * Time.deltaTime;
         }
 
-
         Vector3 horizontalMovement = transform.forward * speed;
         Vector3 totalMovement = horizontalMovement + Vector3.up * _velocity.y   ;
         _controller.Move(totalMovement * Time.deltaTime);
-
-
-   
-
 
     }
     private void OnControllerColliderHit(ControllerColliderHit hit)
