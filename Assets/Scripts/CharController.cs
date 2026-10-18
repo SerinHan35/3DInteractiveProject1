@@ -6,12 +6,12 @@ public class CharController : MonoBehaviour
     //PSEUDO CODE: Declare float variables for speed, maxSpeed, acceleration, deceleration, rotation.
     [Header("Movement Settings")]
     [SerializeField] private float speed = 0f;
-    [SerializeField] private float maxSpeed = 10f;
+    [SerializeField] private float maxSpeed = 100f;
     [SerializeField] private float acceleration = 2f;
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float rotation = 100f;
 
-    [SerializeField] private float pushPower = 5f;
+    [SerializeField] private float pushPower = 15f;
 
 
     private CharacterController _controller;
@@ -79,23 +79,25 @@ public class CharController : MonoBehaviour
     }
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //OnControllerColliderHit is called when the controller hits a collider while performing a Move.
+        // OnControllerColliderHit is called when the controller hits a collider while performing a Move.
         Rigidbody body = hit.rigidbody;
-        
 
         if (body == null || body.isKinematic == true)
         {
             return;
         }
-        else if (hit.moveDirection.y < -0.3f)
+        else if (hit.moveDirection.y < -0.3f) // directional check to see if the player is pushing down on the object, if so don't push it.
         {
             return;
         }
         else
         {
             Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
-            body.AddForce(pushDirection * pushPower, ForceMode.Impulse);
+            float speedRatio = (maxSpeed != 0f) ? (speed / maxSpeed) : 0f;
+            Vector3 pushVelocity = pushDirection * pushPower * speedRatio;
+            Vector3 newVelocity = new Vector3 (pushVelocity.x, body.linearVelocity.y, pushVelocity.z);
+            body.linearVelocity = newVelocity;
         }
-
+   
     }
 }
