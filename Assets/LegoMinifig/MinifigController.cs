@@ -8,8 +8,7 @@ public class MinifigController : MonoBehaviour
     [SerializeField] float CrossFadeSpeed = 2f;
     [SerializeField] string[] AnimationNames = {"Idle", "Run", "Jump", "Wave"};
     int currentIndex = 0;
-    private bool isJumping = false;
-
+ 
  
     void Start()
     {
