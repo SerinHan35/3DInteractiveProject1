@@ -12,6 +12,7 @@ public class CharController : MonoBehaviour
     [SerializeField] private float rotation = 100f;
 
     [SerializeField] private float pushPower = 15f;
+    private Animator _animator;
 
     private CharacterController _controller;
 
@@ -21,6 +22,7 @@ public class CharController : MonoBehaviour
     void Start()
     {
         _controller = GetComponent<CharacterController>();
+        _animator = GetComponentInChildren<Animator>();
     }
     
     void Update()
@@ -65,6 +67,8 @@ public class CharController : MonoBehaviour
         Vector3 horizontalMovement = transform.forward * speed;
         Vector3 totalMovement = horizontalMovement + Vector3.up * _velocity.y   ;
         _controller.Move(totalMovement * Time.deltaTime);
+
+        _animator.SetFloat("Speed", Mathf.Clamp01(speed / maxSpeed));
 
     }
     private void OnControllerColliderHit(ControllerColliderHit hit)
